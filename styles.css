@@ -324,7 +324,7 @@ table tbody tr:hover {
     color: #555;
 }
 
-/* 响应式设计 */
+/* 响应式设计增强 */
 @media (max-width: 768px) {
     .search-box {
         flex-direction: column;
@@ -346,5 +346,131 @@ table tbody tr:hover {
     .pagination {
         flex-direction: column;
         gap: 10px;
+    }
+    
+    /* 新增移动端优化 */
+    header h1 {
+        font-size: 22px;
+    }
+    
+    .tab-btn {
+        padding: 10px 15px;
+        font-size: 14px;
+    }
+    
+    .tab-content {
+        padding: 15px 10px;
+    }
+    
+    /* 移动端表格优化为卡片式布局 */
+    .table-container {
+        overflow-x: hidden;
+    }
+    
+    table, thead, tbody, th, td, tr {
+        display: block;
+    }
+    
+    thead tr {
+        position: absolute;
+        top: -9999px;
+        left: -9999px;
+    }
+    
+    tr {
+        margin-bottom: 15px;
+        border: 1px solid #ddd;
+        border-radius: 5px;
+        box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+    }
+    
+    td {
+        position: relative;
+        padding-left: 50% !important;
+        text-align: right;
+        border-bottom: 1px solid #eee;
+    }
+    
+    td:before {
+        position: absolute;
+        left: 10px;
+        top: 10px;
+        width: 45%;
+        padding-right: 10px;
+        white-space: nowrap;
+        font-weight: bold;
+        text-align: left;
+    }
+    
+    /* 确保按钮在移动端更易点击 */
+    .view-btn {
+        padding: 8px 12px;
+        font-size: 14px;
+        display: block;
+        width: 100%;
+        text-align: center;
+        margin-top: 5px;
+    }
+    
+    /* 图表容器宽度调整 */
+    .chart-box {
+        min-height: 300px;
+    }
+    
+    /* 在文件末尾添加 */
+    
+    /* 移动端表格标签样式 */
+    @media (max-width: 768px) {
+        td:before {
+            content: attr(data-label);
+        }
+        
+        .mobile-label {
+            display: inline-block;
+        }
+        
+        /* 优化图表在移动端的显示 */
+        .charts-container {
+            min-height: 300px;
+        }
+        
+        /* 优化模态框在移动端的显示 */
+        .modal-content {
+            padding: 15px;
+        }
+        
+        .close {
+            right: 15px;
+            top: 10px;
+        }
+        
+        /* 增强触摸区域 */
+        .tab-btn, 
+        .pagination button,
+        .view-btn,
+        .search-box button,
+        .close {
+            min-height: 44px;
+            min-width: 44px;
+        }
+    }
+}
+
+/* 增加更小屏幕的适配 */
+@media (max-width: 480px) {
+    .container {
+        padding: 10px;
+    }
+    
+    header {
+        padding: 15px 0;
+    }
+    
+    .search-section {
+        padding: 10px;
+    }
+    
+    .search-box button {
+        width: 100%;
     }
 }

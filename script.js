@@ -505,3 +505,98 @@ function updateCharts() {
     window.genderChart.update();
     }
 }
+
+// 三、JavaScript增强
+
+// 为了提升移动端体验，需要添加一些JavaScript功能：
+// ```javascript
+// 在现有代码的适当位置添加以下函数
+
+// 为移动端表格添加标签
+function setupMobileTableLabels() {
+    // 获取表头文本
+    const headerTexts = [];
+    document.querySelectorAll('table th').forEach(th => {
+        headerTexts.push(th.textContent.trim());
+    });
+    
+    // 为每个表格单元格添加data属性
+    const tables = document.querySelectorAll('table');
+    tables.forEach(table => {
+        const rows = table.querySelectorAll('tbody tr');
+        rows.forEach(row => {
+            const cells = row.querySelectorAll('td');
+            cells.forEach((cell, index) => {
+                if (index < headerTexts.length) {
+                    // 设置伪元素内容
+                    cell.setAttribute('data-label', headerTexts[index]);
+                    
+                    // 添加移动端样式
+                    if (window.innerWidth <= 768) {
+                        cell.style.paddingLeft = '50%';
+                        cell.style.position = 'relative';
+                        
+                        // 创建标签元素
+                        if (!cell.querySelector('.mobile-label')) {
+                            const label = document.createElement('span');
+                            label.className = 'mobile-label';
+                            label.style.position = 'absolute';
+                            label.style.left = '10px';
+                            label.style.top = '10px';
+                            label.style.fontWeight = 'bold';
+                            label.style.textAlign = 'left';
+                            label.textContent = headerTexts[index];
+                            cell.insertBefore(label, cell.firstChild);
+                        }
+                    }
+                }
+            });
+        });
+    });
+}
+
+// 添加窗口大小变化监听
+window.addEventListener('resize', function() {
+    setupMobileTableLabels();
+});
+
+// 页面加载完成后初始化
+document.addEventListener('DOMContentLoaded', function() {
+    // 调用现有的初始化函数
+    
+    // 添加移动端表格标签
+    setupMobileTableLabels();
+    
+    // 添加触摸滑动支持
+    let startX;
+    const tabsContainer = document.querySelector('.tabs');
+    
+    if (tabsContainer) {
+        tabsContainer.addEventListener('touchstart', function(e) {
+            startX = e.touches[0].clientX;
+        });
+        
+        tabsContainer.addEventListener('touchend', function(e) {
+            const endX = e.changedTouches[0].clientX;
+            const diff = startX - endX;
+            const threshold = 50;
+            
+            if (Math.abs(diff) > threshold) {
+                // 获取当前激活的标签
+                const activeTab = document.querySelector('.tab-btn.active');
+                if (!activeTab) return;
+                
+                const tabs = Array.from(document.querySelectorAll('.tab-btn'));
+                const currentIndex = tabs.indexOf(activeTab);
+                
+                if (diff > 0 && currentIndex < tabs.length - 1) {
+                    // 向左滑动，切换到下一个标签
+                    tabs[currentIndex + 1].click();
+                } else if (diff < 0 && currentIndex > 0) {
+                    // 向右滑动，切换到上一个标签
+                    tabs[currentIndex - 1].click();
+                }
+            }
+        });
+    }
+});
