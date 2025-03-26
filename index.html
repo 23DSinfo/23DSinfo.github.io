@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>学生信息可视化系统</title>
+    <link rel="stylesheet" href="styles.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/papaparse@5.3.0/papaparse.min.js"></script>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>学生信息可视化系统</h1>
+        </header>
+        
+        <div class="search-section">
+            <div class="search-box">
+                <input type="text" id="searchInput" placeholder="搜索学生信息...">
+                <select id="searchType">
+                    <option value="学号">学号</option>
+                    <option value="姓名">姓名</option>
+                    <option value="专业">专业</option>
+                    <option value="生源地">生源地</option>
+                </select>
+                <button id="searchBtn">搜索</button>
+                <button id="resetBtn">重置</button>
+            </div>
+            <div class="filter-box">
+                <div class="filter-item">
+                    <label>专业:</label>
+                    <select id="majorFilter">
+                        <option value="all">全部</option>
+                        <option value="数据科学与大数据技术">数据科学与大数据技术</option>
+                        <option value="人工智能">人工智能</option>
+                    </select>
+                </div>
+                <div class="filter-item">
+                    <label>GPA范围:</label>
+                    <input type="number" id="minGPA" placeholder="最小值" min="0" max="4" step="0.01">
+                    <span>-</span>
+                    <input type="number" id="maxGPA" placeholder="最大值" min="0" max="4" step="0.01">
+                </div>
+                <div class="filter-item">
+                    <label>性别:</label>
+                    <select id="genderFilter">
+                        <option value="all">全部</option>
+                        <option value="男">男</option>
+                        <option value="女">女</option>
+                    </select>
+                </div>
+                <div class="filter-item">
+                    <label>经济困难:</label>
+                    <select id="financialFilter">
+                        <option value="all">全部</option>
+                        <option value="1">是</option>
+                        <option value="0">否</option>
+                    </select>
+                </div>
+            </div>
+        </div>
+
+        <div class="main-content">
+            <div class="tabs">
+                <button class="tab-btn active" data-tab="table">表格视图</button>
+                <button class="tab-btn" data-tab="charts">统计图表</button>
+            </div>
+            
+            <div class="tab-content">
+                <div id="tableView" class="tab-pane active">
+                    <div class="table-container">
+                        <table id="studentTable">
+                            <thead>
+                                <tr>
+                                    <th data-sort="学号">学号 <span class="sort-icon">↕</span></th>
+                                    <th data-sort="姓名">姓名 <span class="sort-icon">↕</span></th>
+                                    <th data-sort="性别">性别 <span class="sort-icon">↕</span></th>
+                                    <th data-sort="年龄">年龄 <span class="sort-icon">↕</span></th>
+                                    <th data-sort="生源地">生源地 <span class="sort-icon">↕</span></th>
+                                    <th data-sort="GPA">GPA <span class="sort-icon">↕</span></th>
+                                    <th data-sort="排名">排名 <span class="sort-icon">↕</span></th>
+                                    <th data-sort="专业">专业 <span class="sort-icon">↕</span></th>
+                                    <th data-sort="寝室号">寝室号 <span class="sort-icon">↕</span></th>
+                                    <th data-sort="手机号">手机号 <span class="sort-icon">↕</span></th>
+                                    <th data-sort="心理风险等级">心理风险等级 <span class="sort-icon">↕</span></th>
+                                    <th data-sort="是否经济困难">经济困难 <span class="sort-icon">↕</span></th>
+                                    <th>操作</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <!-- 数据将通过JavaScript动态加载 -->
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="pagination">
+                        <button id="prevPage">上一页</button>
+                        <span id="pageInfo">第 <span id="currentPage">1</span> 页，共 <span id="totalPages">1</span> 页</span>
+                        <button id="nextPage">下一页</button>
+                        <select id="pageSize">
+                            <option value="10">10条/页</option>
+                            <option value="20">20条/页</option>
+                            <option value="50">50条/页</option>
+                        </select>
+                    </div>
+                </div>
+                
+                <div id="chartsView" class="tab-pane">
+                    <div class="charts-container">
+                        <div class="chart-box">
+                            <h3>GPA分布</h3>
+                            <canvas id="gpaChart"></canvas>
+                        </div>
+                        <div class="chart-box">
+                            <h3>专业分布</h3>
+                            <canvas id="majorChart"></canvas>
+                        </div>
+                        <div class="chart-box">
+                            <h3>籍贯分布</h3>
+                            <canvas id="hometownChart"></canvas>
+                        </div>
+                        <div class="chart-box">
+                            <h3>性别比例</h3>
+                            <canvas id="genderChart"></canvas>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 学生详情模态框 -->
+    <div id="studentModal" class="modal">
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            <h2>学生详细信息</h2>
+            <div id="studentDetails">
+                <!-- 学生详细信息将通过JavaScript动态加载 -->
+            </div>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
